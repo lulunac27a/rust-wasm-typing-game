@@ -1,4 +1,6 @@
 use rand::Rng;
+use wasm_bindgen::prelude::*;
+
 struct GameState {
     score: u32,
     multiplier: f32,
@@ -45,8 +47,6 @@ fn check_typing(game_state: &mut GameState, key: char) -> bool {
         false
     }
 }
-
-use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 
