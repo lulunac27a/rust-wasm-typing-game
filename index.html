@@ -1,37 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>Rust-Wasm Typing Game</title>
-    </head>
-    <body>
-        Score: <span id="score">0</span><br>
-        Multiplier: <span id="multiplier">1.00</span><br>
-        Type the character: <div id="character-to-type"></div><br>
-        <input type="text" id="typing-text"><br>
-        <button id="start-button">Start Game</button><br>
-        <script type="module">
-            import init, { Game } from './pkg/rust_wasm_typing_game.js';
-            const scoreText = document.getElementById('score');
-            const multiplierText = document.getElementById('multiplier');
-            const characterText = document.getElementById('character-to-type');
-            const startButton = document.getElementById('start-button');
-            const typingText = document.getElementById('typing-text');
-            async function run() {
-                await init();
-                const game = Game.new();
-                typingText.addEventListener('input', (event) => {
-                    const key = event.key;
-                    game.handle_typing(key);
-                    const correctKey = game.check_typing(typingText.value);
-                    if (correctKey) {
-                        typingText.value = '';
-                    }
-                    scoreText.textContent = game.get_score();
-                    multiplierText.textContent = game.get_multiplier();
-                    characterText.textContent = game.get_key_to_type();
-                });
-            }
-            run();
-        </script>
-    </body>
+  <head>
+    <title>Rust-Wasm Typing Game</title>
+  </head>
+  <body>
+    Score: <span id="score">0</span><br />
+    Multiplier: <span id="multiplier">1.00</span><br />
+    Type the character:
+    <div id="character-to-type"></div>
+    <br />
+    <input type="text" id="typing-text" /><br />
+    <button id="start-button">Start Game</button><br />
+    <script type="module">
+      import init, { Game } from "./pkg/rust_wasm_typing_game.js";
+      const scoreText = document.getElementById("score");
+      const multiplierText = document.getElementById("multiplier");
+      const characterText = document.getElementById("character-to-type");
+      const startButton = document.getElementById("start-button");
+      const typingText = document.getElementById("typing-text");
+      async function run() {
+        await init();
+        const game = Game.new();
+        typingText.addEventListener("input", (event) => {
+          const key = event.key;
+          game.handle_typing(key);
+          const correctKey = game.check_typing(typingText.value);
+          if (correctKey) {
+            typingText.value = "";
+          }
+          scoreText.textContent = game.get_score();
+          multiplierText.textContent = game.get_multiplier();
+          characterText.textContent = game.get_key_to_type();
+        });
+      }
+      run();
+    </script>
+  </body>
 </html>

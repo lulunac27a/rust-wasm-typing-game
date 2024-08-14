@@ -2,7 +2,7 @@ use rand::Rng;
 struct GameState {
     score: u32,
     multiplier: f32,
-    key_to_type: char
+    key_to_type: char,
 }
 impl GameState {
     fn new() -> Self {
@@ -51,14 +51,14 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 
 pub struct Game {
-    state: GameState
+    state: GameState,
 }
 
 #[wasm_bindgen]
 impl Game {
     pub fn new() -> Game {
         Game {
-            state: GameState::new()
+            state: GameState::new(),
         }
     }
     pub fn handle_typing(&mut self, typed_key: char) {
