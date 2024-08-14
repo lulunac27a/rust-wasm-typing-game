@@ -28,8 +28,13 @@
           if (correctKey) {
             typingText.value = "";
           }
-          scoreText.textContent = game.get_score();
-          multiplierText.textContent = game.get_multiplier();
+          scoreText.textContent = game.get_score().toLocaleString("en-US");
+          multiplierText.textContent = game
+            .get_multiplier()
+            .toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
           characterText.textContent = game.get_key_to_type();
         });
       }
