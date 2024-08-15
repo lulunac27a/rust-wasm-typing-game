@@ -61,6 +61,9 @@ impl Game {
             state: GameState::new(),
         }
     }
+    pub fn check_typing(&mut self, key: char) {
+        check_typing(&mut self.state, key);
+    }
     pub fn handle_typing(&mut self, typed_key: char) {
         handle_typing(&mut self.state, typed_key);
     }
