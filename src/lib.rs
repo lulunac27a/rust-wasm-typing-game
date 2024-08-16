@@ -38,7 +38,7 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
     if check_typing(game_state, typed_key) {
         //check if entered text is correct (entered text is equal to character to type)
         game_state.update_score(100); //increase points
-        game_state.set_multiplier(game_state.multiplier + 0.01 / game_state.multiplier); //increase score multiplier
+        game_state.set_multiplier(game_state.multiplier + 0.01 / game_state.multiplier.max(1.0)); //increase score multiplier
         let mut rng = rand::thread_rng();
         game_state.set_character_to_type(rng.gen_range('a'..='z').to_string()); //set character to type to random character from character list
     } else {
