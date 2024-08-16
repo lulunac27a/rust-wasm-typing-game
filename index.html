@@ -25,12 +25,13 @@
         const game = new Game(); //create new game
         typingText.addEventListener("input", (event) => {
           //do action when key is pressed in typing text field
-          const key = event.key; //get entered text
-          game.handle_typing(key); //handle typing input
+          const key = event.target.value; //get entered text
           const correctKey = game.check_typing(typingText.value); //check if entered text is correct (entered key is equal to character to type)
-          if (correctKey) {
+          if (correctKey || typingText.value === game.get_character_to_type()) {
+            //if this is correct
             typingText.value = ""; //clear typing text value
           }
+          game.handle_typing(key); //handle typing input
           scoreText.textContent = game.get_score().toLocaleString("en-US"); //update score text
           multiplierText.textContent =
             game
@@ -39,7 +40,7 @@
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               }) + "x"; //update score multiplier text
-          characterText.textContent = game.get_key_to_type(); //update character to type text
+          characterText.textContent = game.get_character_to_type(); //update character to type text
         });
       }
       run(); //run the program
