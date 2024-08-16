@@ -5,8 +5,6 @@
   </head>
   <body>
     <h1>Rust-Wasm Typing Game</h1>
-    Score: <span id="score">0</span><br />
-    Multiplier: <span id="multiplier">1.00x</span><br />
     Mode:
     <select id="mode">
       <option id="lowercase-letters" value="1" selected>
@@ -20,6 +18,16 @@
         Letters, Numbers and Symbols
       </option></select
     ><br />
+    Time:
+    <select id="time">
+      <option id="60-seconds" value="60">60 seconds</option>
+      <option id="120-seconds" value="120">120 seconds</option>
+      <option id="180-seconds" value="180">180 seconds</option>
+      <option id="300-seconds" value="300">300 seconds</option></select
+    ><br />
+    Score: <span id="score">0</span><br />
+    Multiplier: <span id="multiplier">1.00x</span><br />
+    Time: <span id="time">0</span><br />
     Type the character:
     <div id="character-to-type"></div>
     <br />
@@ -27,60 +35,61 @@
     <button id="start-button">Start Game</button><br />
     <!--use JavaScript to use methods compiled from Rust-Wasm-->
     <script type="module">
-      import init, { Game } from "./pkg/rust_wasm_typing_game.js";
-      const scoreText = document.getElementById("score"); //score text
-      const multiplierText = document.getElementById("multiplier"); //score multiplier text
-      const characterText = document.getElementById("character-to-type"); //character to type text
-      const startButton = document.getElementById("start-button"); //start button
-      const typingText = document.getElementById("typing-text"); //entered text input
-      const difficultyMode = document.getElementById("mode"); //game difficulty mode
-      async function run() {
-        //function to run the program
-        await init({}); //initialization function
-        let game = new Game(); //create new game
-        startButton.addEventListener("click", () => {
-          game = new Game(); //create new game
-          game.set_difficulty(Number(difficultyMode.value)); //set game difficulty mode
-          game.generate_character_to_type(); //generate random character to type
-          difficultyMode.disabled = true; //disabled game difficulty mode selection
-          typingText.disabled = false; //enable typing text input
-          startButton.disabled = true; //disable start button
-          scoreText.textContent = game.get_score().toLocaleString("en-US"); //update score text
-          multiplierText.textContent =
-            game
-              .get_multiplier()
-              .toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }) + "x"; //update score multiplier text
-          characterText.textContent = game.get_character_to_type(); //update character to type text
-        });
-        difficultyMode.addEventListener("change", () => {
-          //when game difficulty is changed from button from options
-          game.set_difficulty(Number(difficultyMode.value)); //set game difficulty mode
-        });
-        characterText.textContent = game.get_character_to_type(); //update character to type text
-        typingText.addEventListener("input", (event) => {
-          //do action when key is pressed in typing text field
-          const key = event.target.value; //get entered text
-          const correctKey = game.check_typing(typingText.value); //check if entered text is correct (entered key is equal to character to type)
-          if (correctKey || typingText.value === game.get_character_to_type()) {
-            //if this is correct
-            typingText.value = ""; //clear typing text value
-          }
-          game.handle_typing(key); //handle typing input
-          scoreText.textContent = game.get_score().toLocaleString("en-US"); //update score text
-          multiplierText.textContent =
-            game
-              .get_multiplier()
-              .toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }) + "x"; //update score multiplier text
-          characterText.textContent = game.get_character_to_type(); //update character to type text
-        });
+      import init, { Game } from './pkg/rust_wasm_typing_game.js';
+      const scoreText = document.getElementById('score');//score text
+      const multiplierText = document.getElementById('multiplier');//score multiplier text
+      const characterText = document.getElementById('character-to-type');//character to type text
+      const startButton = document.getElementById('start-button');//start button
+      const typingText = document.getElementById('typing-text');//entered text input
+      const difficultyMode = document.getElementById('mode');//game difficulty mode
+      const timeOption = document.getElementById('time');//time limit mode
+      async function run() {//function to run the program
+          await init({});//initialization function
+          let game = new Game();//create new game
+          startButton.addEventListener('click', () => {
+              game = new Game();//create new game
+              game.set_difficulty(Number(difficultyMode.value));//set game difficulty mode
+              game.set_time_limit(Number(timeOption.value));//set time limit mode
+              game.set_time_remaining(Number(timeOption.value));//set time remaining based on selected time limit
+              game.generate_character_to_type();//generate random character to type based on selected difficulty mode
+              difficultyMode.disabled = true;//disable game difficulty mode selection
+              timeOption.disabled = true;//disable time limit mode selection
+              typingText.disabled = false;//enable typing text input
+              startButton.disabled = true;//disable start button
+              scoreText.textContent = game.get_score().toLocaleString('en-US');//update score text
+              multiplierText.textContent = game.get_multiplier().toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'x';//update score multiplier text
+              timeRemaining.textContent = game.get_time_remaining();//update time remaining text
+              characterText.textContent = game.get_character_to_type();//update character to type text
+          });
+          const updateTime = () => {
+              game.set_time_remaining(game.decrease_time());//decreate time remaining by 1 second
+              timeRemaining.textContent = game.get_time_remaining();//update time remaining text
+              if (game.get_time_remaining() === 0) {//if time remaining is 0
+                  clearInterval(updateTimeInterval);//clear update time interval
+                  difficultyMode.disabled = false;//enable game difficulty mode selection
+                  timeOption.disabled = false;//enable time limit mode selection
+                  typingText.disabled = true;//disable typing text input
+                  startButton.disabled = false;//enable start button
+              }
+          };
+          const updateTimeInterval(setInterval(updateTime, 1000));
+          difficultyMode.addEventListener('change', () => {//when game difficulty is changed from button from options
+              game.set_difficulty(Number(difficultyMode.value));//set game difficulty mode
+          });
+          characterText.textContent = game.get_character_to_type();//update character to type text
+          typingText.addEventListener('input', (event) => {//do action when key is pressed in typing text field
+              const key = event.target.value;//get entered text
+              const correctKey = game.check_typing(typingText.value);//check if entered text is correct (entered key is equal to character to type)
+              if (correctKey || typingText.value === game.get_character_to_type()) {//if this is correct
+                  typingText.value = '';//clear typing text value
+              }
+              game.handle_typing(key);//handle typing input
+              scoreText.textContent = game.get_score().toLocaleString('en-US');//update score text
+              multiplierText.textContent = game.get_multiplier().toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + 'x';//update score multiplier text
+              characterText.textContent = game.get_character_to_type();//update character to type text
+          });
       }
-      run(); //run the program
+      run();//run the program
     </script>
   </body>
 </html>

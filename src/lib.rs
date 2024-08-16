@@ -7,6 +7,8 @@ struct GameState {
     multiplier: f32,           //score multiplier
     difficulty: u32,           //game difficulty
     character_to_type: String, //character to type
+    time_limit: u32,           //time remaining in seconds
+    time_remaining: u32,       //time remaining in seconds
 }
 impl GameState {
     fn new() -> Self {
@@ -17,6 +19,8 @@ impl GameState {
             multiplier: 1.0,                                         //set multiplier to 1
             difficulty: 1,                                           //set difficulty to 1
             character_to_type: rng.gen_range('a'..='z').to_string(), //set character to type to random character from character set
+            time_limit: 60,                                          //set time limit to 60 seconds
+            time_remaining: 60, //set time remaining to 60 seconds
         }
     }
 
@@ -47,7 +51,9 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
         } else {
             0.01 / game_state.multiplier.max(1.0)
         }; //increase score multiplier based on currect score multiplier
-        game_state.set_multiplier(game_state.multiplier + multiplier_bonus); //increase score multiplier
+        let time_bonus: f32 =
+            1.0 / (game_state.time_limit + game.state.time_remaining - game_state.time_limit); //increase score multiplier based on time limit and time remaining
+        game_state.set_multiplier(game_state.multiplier + multiplier_bonus + time_bonus); //increase score multiplier
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
         let uppercase_characters: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
@@ -162,9 +168,28 @@ impl Game {
         //get current character to type
         self.state.character_to_type.to_string()
     }
+    pub fn get_time_remaining(&self) -> u32 {
+        //get current time remaining in seconds
+        self.state.time_remaining
+    }
     pub fn set_difficulty(&mut self, difficulty: u32) {
         //set current difficulty
         self.state.difficulty = difficulty; //set difficulty
+    }
+    pub fn set_time_limit(&mut self, time: u32) {
+        //set time limit in seconds
+        self.state.time_limit = time; //set time limit in seconds
+    }
+    pub fn set_time_remaining(&mut self, time: u32) {
+        //set time remaining in seconds
+        self.state.time_remaining = time; //set time remaining in seconds
+    }
+    pub fn decrease_time(&mut self) {
+        //decrease time remaining
+        if self.state.time_remaining > 0 {
+            //check if time remaining is greater than 0
+            self.state.time_remaining -= 1; //decrease time remaining by 1
+        }
     }
     pub fn generate_character_to_type(&mut self) {
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
