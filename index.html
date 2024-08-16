@@ -10,8 +10,9 @@
     Type the character:
     <div id="character-to-type"></div>
     <br />
-    <input type="text" id="typing-text" /><br />
+    <input type="text" id="typing-text" disabled /><br />
     <button id="start-button">Start Game</button><br />
+    <!--use JavaScript to use methods compiled from Rust-Wasm-->
     <script type="module">
       import init, { Game } from "./pkg/rust_wasm_typing_game.js";
       const scoreText = document.getElementById("score"); //score text
@@ -22,7 +23,22 @@
       async function run() {
         //function to run the program
         await init({}); //initialization function
-        const game = new Game(); //create new game
+        let game = new Game(); //create new game
+        startButton.addEventListener("click", () => {
+          game = new Game(); //create new game
+          typingText.disabled = false; //enable typing text input
+          startButton.disabled = true; //disable start button
+          scoreText.textContent = game.get_score().toLocaleString("en-US"); //update score text
+          multiplierText.textContent =
+            game
+              .get_multiplier()
+              .toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }) + "x"; //update score multiplier text
+          characterText.textContent = game.get_character_to_type(); //update character to type text
+        });
+        characterText.textContent = game.get_character_to_type(); //update character to type text
         typingText.addEventListener("input", (event) => {
           //do action when key is pressed in typing text field
           const key = event.target.value; //get entered text
