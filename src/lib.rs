@@ -2,18 +2,18 @@ use rand::Rng;
 use wasm_bindgen::prelude::*;
 
 struct GameState {
-    score: u32,        //game score
-    multiplier: f32,   //score multiplier
-    key_to_type: char, //key to type
+    score: u32,              //game score
+    multiplier: f32,         //score multiplier
+    character_to_type: char, //character to type
 }
 impl GameState {
     fn new() -> Self {
         //create new game object
         let mut rng = rand::thread_rng();
         GameState {
-            score: 0,                              //set score to 0
-            multiplier: 1.0,                       //set multiplier to 1
-            key_to_type: rng.gen_range('a'..='z'), //set key to type to random character from character set
+            score: 0,                                    //set score to 0
+            multiplier: 1.0,                             //set multiplier to 1
+            character_to_type: rng.gen_range('a'..='z'), //set character to type to random character from character set
         }
     }
 
@@ -27,28 +27,28 @@ impl GameState {
         self.multiplier = new_multiplier; //set score multiplier value
     }
 
-    fn set_key_to_type(&mut self, new_key: char) {
-        //update key to type
-        self.key_to_type = new_key; //set key to type
+    fn set_character_to_type(&mut self, new_key: char) {
+        //update character to type
+        self.character_to_type = new_key; //set character to type
     }
 }
 
 fn handle_typing(game_state: &mut GameState, typed_key: char) {
     //handle typing input
     if check_typing(game_state, typed_key) {
-        //check if entered text is correct (entered text is equal to key to type)
+        //check if entered text is correct (entered text is equal to character to type)
         game_state.update_score(100); //increase points
         game_state.set_multiplier(game_state.multiplier + 0.01 / game_state.multiplier); //increase score multiplier
         let mut rng = rand::thread_rng();
-        game_state.set_key_to_type(rng.gen_range('a'..='z')); //set key to type to random character from character list
+        game_state.set_character_to_type(rng.gen_range('a'..='z')); //set character to type to random character from character list
     } else {
         game_state.set_multiplier(game_state.multiplier * 0.99); //decrease score multiplier
     }
 }
 
 fn check_typing(game_state: &mut GameState, key: char) -> bool {
-    //check if entered text is equal to key to type
-    if key == game_state.key_to_type {
+    //check if entered text is equal to character to type
+    if key == game_state.character_to_type {
         //if correct
         true
     } else {
@@ -71,7 +71,7 @@ impl Game {
         }
     }
     pub fn check_typing(&mut self, key: char) {
-        //check if entered text is correct (key to type is equal to entered text)
+        //check if entered text is correct (character to type is equal to entered text)
         check_typing(&mut self.state, key);
     }
     pub fn handle_typing(&mut self, typed_key: char) {
@@ -86,8 +86,8 @@ impl Game {
         //get current score multiplier
         self.state.multiplier
     }
-    pub fn get_key_to_type(&self) -> char {
-        //get current key to type
-        self.state.key_to_type
+    pub fn get_character_to_type(&self) -> char {
+        //get current character to type
+        self.state.character_to_type
     }
 }
