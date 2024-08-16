@@ -5,7 +5,7 @@ use wasm_bindgen::prelude::*;
 struct GameState {
     score: u32,                //game score
     multiplier: f32,           //score multiplier
-    difficuity: u32,           //game difficulty
+    difficulty: u32,           //game difficulty
     character_to_type: String, //character to type
 }
 impl GameState {
@@ -15,14 +15,14 @@ impl GameState {
         GameState {
             score: 0,                                                //set score to 0
             multiplier: 1.0,                                         //set multiplier to 1
-            difficuity: 1,                                           //set difficulty to 1
+            difficulty: 1,                                           //set difficulty to 1
             character_to_type: rng.gen_range('a'..='z').to_string(), //set character to type to random character from character set
         }
     }
 
     fn update_score(&mut self, points: u32) {
         //update score
-        self.score += (points as f32 * self.multiplier * self.difficuity as f32).floor() as u32;
+        self.score += (points as f32 * self.multiplier * self.difficulty as f32).floor() as u32;
         //increase score based on amount and multiplier
     }
 
@@ -53,29 +53,28 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
         let uppercase_characters: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
         let numeric_digit_characters: Vec<char> = "0123456789".chars().collect(); //numeric digits
         let symbol_characters: Vec<char> = "~!@#$%^&*()_+`-=[]\\;',./{}|:\"<>?".chars().collect(); //special characters (symbols)
-        if game_state.difficuity == 1 {
+        if game_state.difficulty == 1 {
             game_state
                 .set_character_to_type(lowercase_characters.choose(&mut rng).unwrap().to_string());
         //set character to type to random lowercase character from character list
-        } else if game_state.difficuity == 2 {
+        } else if game_state.difficulty == 2 {
             let rand_value: f32 = rng.gen();
-            if rand_value < 1.0 / 2.0 {
+            if rand_value < (1.0 / 2.0) {
                 game_state.set_character_to_type(
                     lowercase_characters.choose(&mut rng).unwrap().to_string(),
                 ); //set character to type to random lowercase character from character list
             } else {
                 game_state.set_character_to_type(
                     uppercase_characters.choose(&mut rng).unwrap().to_string(),
-                )
-            }; //set character to type to random uppercase character from character list
-        } else if game_state.difficuity == 3 {
+                ); //set character to type to random uppercase character from character list
+            }
+        } else if game_state.difficulty == 3 {
             let rand_value: f32 = rng.gen();
-            if rand_value < 26.0 / 62.0 {
+            if rand_value < (26.0 / 62.0) {
                 game_state.set_character_to_type(
                     lowercase_characters.choose(&mut rng).unwrap().to_string(),
                 ); //set character to type to random lowercase character from character list
-            }
-            if rand_value < 52.0 / 62.0 {
+            } else if rand_value < (52.0 / 62.0) {
                 game_state.set_character_to_type(
                     uppercase_characters.choose(&mut rng).unwrap().to_string(),
                 ); //set character to type to random uppercase character from character list
@@ -85,21 +84,19 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
                         .choose(&mut rng)
                         .unwrap()
                         .to_string(),
-                )
-            }; //set character to type to random numeric digit character from character list
-        } else if game_state.difficuity == 4 {
+                ); //set character to type to random numeric digit character from character list
+            }
+        } else if game_state.difficulty == 4 {
             let rand_value: f32 = rng.gen();
-            if rand_value < 26.0 / 94.0 {
+            if rand_value < (26.0 / 94.0) {
                 game_state.set_character_to_type(
                     lowercase_characters.choose(&mut rng).unwrap().to_string(),
                 ); //set character to type to random lowercase character from character list
-            }
-            if rand_value < 52.0 / 94.0 {
+            } else if rand_value < (52.0 / 94.0) {
                 game_state.set_character_to_type(
                     uppercase_characters.choose(&mut rng).unwrap().to_string(),
                 ); //set character to type to random uppercase character from character list
-            }
-            if rand_value < 62.0 / 94.0 {
+            } else if rand_value < (62.0 / 94.0) {
                 game_state.set_character_to_type(
                     numeric_digit_characters
                         .choose(&mut rng)
@@ -160,5 +157,9 @@ impl Game {
     pub fn get_character_to_type(&self) -> String {
         //get current character to type
         self.state.character_to_type.to_string()
+    }
+    pub fn set_difficulty(&mut self, difficulty: u32) {
+        //set current difficulty
+        self.state.difficulty = difficulty; //set difficulty
     }
 }

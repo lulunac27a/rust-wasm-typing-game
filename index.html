@@ -7,6 +7,19 @@
     <h1>Rust-Wasm Typing Game</h1>
     Score: <span id="score">0</span><br />
     Multiplier: <span id="multiplier">1.00x</span><br />
+    Mode:
+    <select id="mode">
+      <option id="lowercase-letters" value="1" selected>
+        Lowercase Letters
+      </option>
+      <option id="all-letters" value="2">
+        Uppercase and Lowercase Letters
+      </option>
+      <option id="letters-and-numbers" value="3">Letters and Numbers</option>
+      <option id="letters-numbers-and-symbols" value="4">
+        Letters, Numbers and Symbols
+      </option></select
+    ><br />
     Type the character:
     <div id="character-to-type"></div>
     <br />
@@ -20,12 +33,15 @@
       const characterText = document.getElementById("character-to-type"); //character to type text
       const startButton = document.getElementById("start-button"); //start button
       const typingText = document.getElementById("typing-text"); //entered text input
+      const difficultyMode = document.getElementById("mode"); //game difficulty mode
       async function run() {
         //function to run the program
         await init({}); //initialization function
         let game = new Game(); //create new game
         startButton.addEventListener("click", () => {
           game = new Game(); //create new game
+          game.set_difficulty(Number(difficultyMode.value)); //set game difficulty mode
+          difficultyMode.disabled = true; //disabled game difficulty mode selection
           typingText.disabled = false; //enable typing text input
           startButton.disabled = true; //disable start button
           scoreText.textContent = game.get_score().toLocaleString("en-US"); //update score text
@@ -37,6 +53,10 @@
                 maximumFractionDigits: 2,
               }) + "x"; //update score multiplier text
           characterText.textContent = game.get_character_to_type(); //update character to type text
+        });
+        difficultyMode.addEventListener("change", () => {
+          //when game difficulty is changed from button from options
+          game.set_difficulty(Number(difficultyMode.value)); //set game difficulty mode
         });
         characterText.textContent = game.get_character_to_type(); //update character to type text
         typingText.addEventListener("input", (event) => {
