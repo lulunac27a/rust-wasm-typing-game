@@ -9,7 +9,7 @@ struct GameState {
 impl GameState {
     fn new() -> Self {
         //create new game object
-        let mut rng = rand::thread_rng();
+        let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         GameState {
             score: 0,                                                //set score to 0
             multiplier: 1.0,                                         //set multiplier to 1
@@ -39,7 +39,7 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
         //check if entered text is correct (entered text is equal to character to type)
         game_state.update_score(100); //increase points
         game_state.set_multiplier(game_state.multiplier + 0.01 / game_state.multiplier.max(1.0)); //increase score multiplier
-        let mut rng = rand::thread_rng();
+        let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         game_state.set_character_to_type(rng.gen_range('a'..='z').to_string()); //set character to type to random character from character list
     } else {
         game_state.set_multiplier(game_state.multiplier * 0.99); //decrease score multiplier
