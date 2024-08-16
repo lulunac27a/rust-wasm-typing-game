@@ -41,6 +41,7 @@
         startButton.addEventListener("click", () => {
           game = new Game(); //create new game
           game.set_difficulty(Number(difficultyMode.value)); //set game difficulty mode
+          game.generate_character_to_type(); //generate random character to type
           difficultyMode.disabled = true; //disabled game difficulty mode selection
           typingText.disabled = false; //enable typing text input
           startButton.disabled = true; //disable start button

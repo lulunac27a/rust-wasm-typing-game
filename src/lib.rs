@@ -154,6 +154,10 @@ impl Game {
         //get current score multiplier
         self.state.multiplier
     }
+    pub fn get_difficulty(&self) -> u32 {
+        //get current difficulty
+        self.state.difficulty
+    }
     pub fn get_character_to_type(&self) -> String {
         //get current character to type
         self.state.character_to_type.to_string()
@@ -161,5 +165,67 @@ impl Game {
     pub fn set_difficulty(&mut self, difficulty: u32) {
         //set current difficulty
         self.state.difficulty = difficulty; //set difficulty
+    }
+    pub fn generate_character_to_type(&mut self) {
+        let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
+        let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
+        let uppercase_characters: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
+        let numeric_digit_characters: Vec<char> = "0123456789".chars().collect(); //numeric digits
+        let symbol_characters: Vec<char> = "~!@#$%^&*()_+`-=[]\\;',./{}|:\"<>?".chars().collect(); //special characters (symbols)
+        if self.state.difficulty == 1 {
+            self.state
+                .set_character_to_type(lowercase_characters.choose(&mut rng).unwrap().to_string());
+        //set character to type to random lowercase character from character list
+        } else if self.state.difficulty == 2 {
+            let rand_value: f32 = rng.gen();
+            if rand_value < (1.0 / 2.0) {
+                self.state.set_character_to_type(
+                    lowercase_characters.choose(&mut rng).unwrap().to_string(),
+                ); //set character to type to random lowercase character from character list
+            } else {
+                self.state.set_character_to_type(
+                    uppercase_characters.choose(&mut rng).unwrap().to_string(),
+                ); //set character to type to random uppercase character from character list
+            }
+        } else if self.state.difficulty == 3 {
+            let rand_value: f32 = rng.gen();
+            if rand_value < (26.0 / 62.0) {
+                self.state.set_character_to_type(
+                    lowercase_characters.choose(&mut rng).unwrap().to_string(),
+                ); //set character to type to random lowercase character from character list
+            } else if rand_value < (52.0 / 62.0) {
+                self.state.set_character_to_type(
+                    uppercase_characters.choose(&mut rng).unwrap().to_string(),
+                ); //set character to type to random uppercase character from character list
+            } else {
+                self.state.set_character_to_type(
+                    numeric_digit_characters
+                        .choose(&mut rng)
+                        .unwrap()
+                        .to_string(),
+                ); //set character to type to random numeric digit character from character list
+            }
+        } else if self.state.difficulty == 4 {
+            let rand_value: f32 = rng.gen();
+            if rand_value < (26.0 / 94.0) {
+                self.state.set_character_to_type(
+                    lowercase_characters.choose(&mut rng).unwrap().to_string(),
+                ); //set character to type to random lowercase character from character list
+            } else if rand_value < (52.0 / 94.0) {
+                self.state.set_character_to_type(
+                    uppercase_characters.choose(&mut rng).unwrap().to_string(),
+                ); //set character to type to random uppercase character from character list
+            } else if rand_value < (62.0 / 94.0) {
+                self.state.set_character_to_type(
+                    numeric_digit_characters
+                        .choose(&mut rng)
+                        .unwrap()
+                        .to_string(),
+                ); //set character to type to random numeric digit character from character list
+            } else {
+                self.state
+                    .set_character_to_type(symbol_characters.choose(&mut rng).unwrap().to_string())
+            }; //set character to type to random symbol character from character list
+        }
     }
 }
