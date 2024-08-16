@@ -21,8 +21,8 @@
       const typingText = document.getElementById("typing-text"); //entered text input
       async function run() {
         //function to run the program
-        await init(); //initialization function
-        const game = Game.new(); //create new game
+        await init({}); //initialization function
+        const game = new Game(); //create new game
         typingText.addEventListener("input", (event) => {
           //do action when key is pressed in typing text field
           const key = event.key; //get entered text
