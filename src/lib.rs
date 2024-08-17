@@ -45,14 +45,14 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
     //handle typing input
     if check_typing(game_state, typed_key) {
         //check if entered text is correct (entered text is equal to character to type)
-        game_state.update_score(100); //increase points
+        game_state.update_score(game_state.time_limit + game_state.time_remaining); //increase points based on time remaining and time limit
         let multiplier_bonus: f32 = if game_state.multiplier < 1.0 {
             0.02 - game_state.multiplier * 0.01
         } else {
             0.01 / game_state.multiplier.max(1.0)
         }; //increase score multiplier based on currect score multiplier
         let time_bonus: f32 =
-            1.0 / (game_state.time_limit + game.state.time_remaining - game_state.time_limit); //increase score multiplier based on time limit and time remaining
+            1.0 / (game_state.time_limit + game_state.time_remaining - game_state.time_limit); //increase score multiplier based on time limit and time remaining
         game_state.set_multiplier(game_state.multiplier + multiplier_bonus + time_bonus); //increase score multiplier
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
