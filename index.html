@@ -68,20 +68,20 @@
               }) + "x"; //update score multiplier text
           timeRemaining.textContent = game.get_time_remaining(); //update time remaining text
           characterText.textContent = game.get_character_to_type(); //update character to type text
+          const updateTime = () => {
+            game.set_time_remaining(game.decrease_time()); //decreate time remaining by 1 second
+            timeRemaining.textContent = game.get_time_remaining(); //update time remaining text
+            if (game.get_time_remaining() === 0) {
+              //if time remaining is 0
+              clearInterval(updateTimeInterval); //clear update time interval
+              difficultyMode.disabled = false; //enable game difficulty mode selection
+              timeOption.disabled = false; //enable time limit mode selection
+              typingText.disabled = true; //disable typing text input
+              startButton.disabled = false; //enable start button
+            }
+          };
+          const updateTimeInterval = setInterval(updateTime, 1000);
         });
-        const updateTime = () => {
-          game.set_time_remaining(game.decrease_time()); //decreate time remaining by 1 second
-          timeRemaining.textContent = game.get_time_remaining(); //update time remaining text
-          if (game.get_time_remaining() === 0) {
-            //if time remaining is 0
-            clearInterval(updateTimeInterval); //clear update time interval
-            difficultyMode.disabled = false; //enable game difficulty mode selection
-            timeOption.disabled = false; //enable time limit mode selection
-            typingText.disabled = true; //disable typing text input
-            startButton.disabled = false; //enable start button
-          }
-        };
-        const updateTimeInterval = setInterval(updateTime, 1000);
         difficultyMode.addEventListener("change", () => {
           //when game difficulty is changed from button from options
           game.set_difficulty(Number(difficultyMode.value)); //set game difficulty mode
