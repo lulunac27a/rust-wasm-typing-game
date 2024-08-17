@@ -52,8 +52,8 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
             0.01 / game_state.multiplier.max(1.0)
         }; //increase score multiplier based on currect score multiplier
         let time_bonus: f32 = 1.0
-            / (game_state.time_limit as f32 + game_state.time_remaining as f32
-                - game_state.time_limit as f32) as f32; //increase score multiplier based on time limit and time remaining
+            / (game_state.time_limit as f32 - game_state.time_remaining as f32
+                + game_state.time_limit as f32) as f32; //increase score multiplier based on time limit and time remaining
         game_state.set_multiplier(game_state.multiplier + multiplier_bonus + time_bonus); //increase score multiplier
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
