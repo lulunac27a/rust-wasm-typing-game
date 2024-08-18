@@ -1,0 +1,10 @@
+* {
+  /*global styles*/
+  font-family: system-ui, sans-serif; /*set text to system-based font or sans-serif font*/
+  font-variant-numeric: tabular-nums; /*set numeric digits to tabular numbers*/
+}
+#character-to-type {
+  /*character to type*/
+  font-family: monospace; /*set text to monospaced font*/
+  font-size: 36px; /*set size to 36px*/
+}

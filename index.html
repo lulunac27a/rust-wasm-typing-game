@@ -2,10 +2,12 @@
 <html lang="en">
   <head>
     <title>Rust-Wasm Typing Game</title>
+    <!--use CSS file for styling-->
+    <link rel="stylesheet" href="src/index.css" />
   </head>
   <body>
     <h1>Rust-Wasm Typing Game</h1>
-    Mode: <label for="mode"></label
+    <label for="mode">Mode: </label
     ><select id="mode">
       <option id="lowercase-letters" value="1" selected>
         Lowercase Letters
@@ -18,7 +20,7 @@
         Letters, Numbers and Symbols
       </option></select
     ><br />
-    Time: <label for="time"></label
+    <label for="time">Time: </label
     ><select id="time">
       <option id="60-seconds" value="60">60 seconds</option>
       <option id="120-seconds" value="120">120 seconds</option>
@@ -28,10 +30,10 @@
     Score: <span id="score">0</span><br />
     Multiplier: <span id="multiplier">1.00x</span><br />
     Time: <span id="time-remaining">0</span><br />
-    Type the character:
-    <div id="character-to-type"></div>
-    <br />
-    <label for="typing-text"></label
+    <label for="typing-text"
+      >Type the character:
+      <div id="character-to-type"></div>
+      <br /> </label
     ><input type="text" id="typing-text" disabled /><br />
     <button id="start-button">Start Game</button><br />
     <!--use JavaScript to use methods compiled from Rust-Wasm-->
