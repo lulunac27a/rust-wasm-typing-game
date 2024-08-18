@@ -4,7 +4,7 @@
   font-variant-numeric: tabular-nums; /*set numeric digits to tabular numbers*/
 }
 #character-to-type {
-  /*character to type*/
+  /*character to type styles*/
   font-family: monospace; /*set text to monospaced font*/
   font-size: 36px; /*set size to 36px*/
 }
