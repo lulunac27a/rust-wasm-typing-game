@@ -192,6 +192,22 @@ impl Game {
             self.state.time_remaining -= 1; //decrease time remaining by 1
         }
     }
+    pub fn update_score(&mut self, points: u32) {
+        //update score
+        self.state.score +=
+            (points as f32 * self.state.multiplier * self.state.difficulty as f32).floor() as u32;
+        //increase score based on amount and multiplier
+    }
+
+    pub fn set_multiplier(&mut self, new_multiplier: f32) {
+        //update score multiplier
+        self.state.multiplier = new_multiplier; //set score multiplier value
+    }
+
+    pub fn set_character_to_type(&mut self, new_key: String) {
+        //update character to type
+        self.state.character_to_type = new_key.to_string(); //set character to type
+    }
     pub fn generate_character_to_type(&mut self) {
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
