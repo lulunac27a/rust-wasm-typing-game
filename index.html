@@ -5,8 +5,8 @@
   </head>
   <body>
     <h1>Rust-Wasm Typing Game</h1>
-    Mode:
-    <select id="mode">
+    Mode: <label for="mode"></label
+    ><select id="mode">
       <option id="lowercase-letters" value="1" selected>
         Lowercase Letters
       </option>
@@ -18,8 +18,8 @@
         Letters, Numbers and Symbols
       </option></select
     ><br />
-    Time:
-    <select id="time">
+    Time: <label for="time"></label
+    ><select id="time">
       <option id="60-seconds" value="60">60 seconds</option>
       <option id="120-seconds" value="120">120 seconds</option>
       <option id="180-seconds" value="180">180 seconds</option>
@@ -31,7 +31,8 @@
     Type the character:
     <div id="character-to-type"></div>
     <br />
-    <input type="text" id="typing-text" disabled /><br />
+    <label for="typing-text"></label
+    ><input type="text" id="typing-text" disabled /><br />
     <button id="start-button">Start Game</button><br />
     <!--use JavaScript to use methods compiled from Rust-Wasm-->
     <script type="module">
@@ -69,7 +70,7 @@
           timeRemaining.textContent = game.get_time_remaining(); //update time remaining text
           characterText.textContent = game.get_character_to_type(); //update character to type text
           const updateTime = () => {
-            game.decrease_time(); //decreate time remaining by 1 second
+            game.decrease_time(); //decrease time remaining by 1 second
             timeRemaining.textContent = game.get_time_remaining(); //update time remaining text
             if (game.get_time_remaining() === 0) {
               //if time remaining is 0
