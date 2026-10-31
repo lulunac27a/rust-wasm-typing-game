@@ -16,18 +16,18 @@ impl GameState {
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
         GameState {
             score: 0,                                                //set score to 0
-            multiplier: 1.0,                                         //set multiplier to 1
-            difficulty: 1,                                           //set difficulty to 1
+            multiplier: 1.0, //set multiplier to 1
+            difficulty: 1,   //set difficulty to 1
             character_to_type: rng.gen_range('a'..='z').to_string(), //set character to type to random character from character set
-            time_limit: 60,                                          //set time limit to 60 seconds
+            time_limit: 60,     //set time limit to 60 seconds
             time_remaining: 60, //set time remaining to 60 seconds
         }
     }
 
     fn update_score(&mut self, points: u32) {
         //update score
-        self.score += (points as f32 * self.multiplier * self.difficulty as f32).floor() as u32;
-        //increase score based on amount and multiplier
+        self.score += (points as f32 * self.multiplier * self.difficulty as f32)
+            .floor() as u32; //increase score based on amount and multiplier
     }
 
     fn set_multiplier(&mut self, new_multiplier: f32) {
@@ -45,7 +45,8 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
     //handle typing input
     if check_typing(game_state, typed_key) {
         //check if entered text is correct (entered text is equal to character to type)
-        game_state.update_score(game_state.time_limit + game_state.time_remaining); //increase points based on time remaining and time limit
+        game_state
+            .update_score(game_state.time_limit + game_state.time_remaining); //increase points based on time remaining and time limit
         let multiplier_bonus: f32 = if game_state.multiplier < 1.0 {
             0.02 - game_state.multiplier * 0.01
         } else {
@@ -54,16 +55,22 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
         let time_bonus: f32 = 1.0
             / (game_state.time_limit as f32 - game_state.time_remaining as f32
                 + game_state.time_limit as f32) as f32; //increase score multiplier based on time limit and time remaining
-        game_state.set_multiplier(game_state.multiplier + multiplier_bonus + time_bonus); //increase score multiplier
+        game_state.set_multiplier(
+            game_state.multiplier + multiplier_bonus + time_bonus,
+        ); //increase score multiplier
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
-        let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
-        let uppercase_characters: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
-        let numeric_digit_characters: Vec<char> = "0123456789".chars().collect(); //numeric digits
-        let symbol_characters: Vec<char> = "~!@#$%^&*()_+`-=[]\\;',./{}|:\"<>?".chars().collect(); //special characters (symbols)
+        let lowercase_characters: Vec<char> =
+            "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
+        let uppercase_characters: Vec<char> =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
+        let numeric_digit_characters: Vec<char> =
+            "0123456789".chars().collect(); //numeric digits
+        let symbol_characters: Vec<char> =
+            "~!@#$%^&*()_+`-=[]\\;',./{}|:\"<>?".chars().collect(); //special characters (symbols)
         if game_state.difficulty == 1 {
-            game_state
-                .set_character_to_type(lowercase_characters.choose(&mut rng).unwrap().to_string());
-        //set character to type to random lowercase character from character list
+            game_state.set_character_to_type(
+                lowercase_characters.choose(&mut rng).unwrap().to_string(),
+            ); //set character to type to random lowercase character from character list
         } else if game_state.difficulty == 2 {
             let rand_value: f32 = rng.gen();
             if rand_value < (1.0 / 2.0) {
@@ -111,8 +118,9 @@ fn handle_typing(game_state: &mut GameState, typed_key: String) {
                         .to_string(),
                 ); //set character to type to random numeric digit character from character list
             } else {
-                game_state
-                    .set_character_to_type(symbol_characters.choose(&mut rng).unwrap().to_string())
+                game_state.set_character_to_type(
+                    symbol_characters.choose(&mut rng).unwrap().to_string(),
+                )
             }; //set character to type to random symbol character from character list
         }
     } else {
@@ -194,9 +202,10 @@ impl Game {
     }
     pub fn update_score(&mut self, points: u32) {
         //update score
-        self.state.score +=
-            (points as f32 * self.state.multiplier * self.state.difficulty as f32).floor() as u32;
-        //increase score based on amount and multiplier
+        self.state.score += (points as f32
+            * self.state.multiplier
+            * self.state.difficulty as f32)
+            .floor() as u32; //increase score based on amount and multiplier
     }
 
     pub fn set_multiplier(&mut self, new_multiplier: f32) {
@@ -210,14 +219,18 @@ impl Game {
     }
     pub fn generate_character_to_type(&mut self) {
         let mut rng: rand::prelude::ThreadRng = rand::thread_rng(); //random object
-        let lowercase_characters: Vec<char> = "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
-        let uppercase_characters: Vec<char> = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
-        let numeric_digit_characters: Vec<char> = "0123456789".chars().collect(); //numeric digits
-        let symbol_characters: Vec<char> = "~!@#$%^&*()_+`-=[]\\;',./{}|:\"<>?".chars().collect(); //special characters (symbols)
+        let lowercase_characters: Vec<char> =
+            "abcdefghijklmnopqrstuvwxyz".chars().collect(); //lowercase characters
+        let uppercase_characters: Vec<char> =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect(); //uppercase characters
+        let numeric_digit_characters: Vec<char> =
+            "0123456789".chars().collect(); //numeric digits
+        let symbol_characters: Vec<char> =
+            "~!@#$%^&*()_+`-=[]\\;',./{}|:\"<>?".chars().collect(); //special characters (symbols)
         if self.state.difficulty == 1 {
-            self.state
-                .set_character_to_type(lowercase_characters.choose(&mut rng).unwrap().to_string());
-        //set character to type to random lowercase character from character list
+            self.state.set_character_to_type(
+                lowercase_characters.choose(&mut rng).unwrap().to_string(),
+            ); //set character to type to random lowercase character from character list
         } else if self.state.difficulty == 2 {
             let rand_value: f32 = rng.gen();
             if rand_value < (1.0 / 2.0) {
@@ -265,8 +278,9 @@ impl Game {
                         .to_string(),
                 ); //set character to type to random numeric digit character from character list
             } else {
-                self.state
-                    .set_character_to_type(symbol_characters.choose(&mut rng).unwrap().to_string())
+                self.state.set_character_to_type(
+                    symbol_characters.choose(&mut rng).unwrap().to_string(),
+                )
             }; //set character to type to random symbol character from character list
         }
     }
